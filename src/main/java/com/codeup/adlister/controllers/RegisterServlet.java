@@ -16,7 +16,7 @@ public class RegisterServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
@@ -24,13 +24,20 @@ public class RegisterServlet extends HttpServlet {
 
         // validate input
         boolean inputHasErrors = username.isEmpty()
-            || email.isEmpty()
-            || password.isEmpty()
-            || (! password.equals(passwordConfirmation));
+                || email.isEmpty()
+                || password.isEmpty()
+                || (! password.equals(passwordConfirmation));
 
         if (inputHasErrors) {
             response.sendRedirect("/register");
             return;
+        }
+
+        // check if the username is unique
+        if (!DaoFactory.getUsersDao().isUsernameUnique(username)) { // <-- Added this line
+            request.setAttribute("usernameNotUnique", true); // <-- Added this line
+            request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response); // <-- Added this line
+            return; // <-- Added this line
         }
 
         // create and save a new user
@@ -39,3 +46,7 @@ public class RegisterServlet extends HttpServlet {
         response.sendRedirect("/login");
     }
 }
+
+
+
+//    I added a new condition to check if the username is unique using the isUsernameUnique method. If the username is not unique, an attribute called "usernameNotUnique" is set to true on the request, and the registration page is displayed again with an error message. I will need to update the register.jsp file to display the error message when the "usernameNotUnique" attribute is set to true.
