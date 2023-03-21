@@ -16,9 +16,9 @@ public class DeleteAdServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/profile.jsp").forward(request, response);
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //retrieve ad
         Long adId = Long.parseLong(request.getParameter("singleAd"));
         Ad singleAd = DaoFactory.getAdsDao().findUniqueAdId(adId);
+
         DaoFactory.getAdsDao().delete(singleAd);
         response.sendRedirect("/profile");
         //delete ad

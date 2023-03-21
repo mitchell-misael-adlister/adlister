@@ -24,12 +24,14 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+
         User user = DaoFactory.getUsersDao().findByUsername(username);
 
         request.setAttribute("errors", false);
 
         boolean validAttempt = false;
 
+        // username error
         if (user == null) {
             request.setAttribute("errors", true);
             request.setAttribute("username_error", true);
@@ -37,6 +39,7 @@ public class LoginServlet extends HttpServlet {
             validAttempt = Password.check(password, user.getPassword());
         }
 
+        // password error
         if (validAttempt) {
             request.getSession().setAttribute("user", user);
             response.sendRedirect("/profile");

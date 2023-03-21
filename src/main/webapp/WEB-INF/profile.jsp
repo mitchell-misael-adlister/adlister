@@ -11,7 +11,7 @@
 
 <div class="container">
 
-    <h1>Welcome, ${sessionScope.user.username}!</h1>
+    <h1>Welcome, ${session.user.username}!</h1>
 
     <h1>Here Are all your ads!</h1>
 
@@ -25,8 +25,7 @@
                     <button>Edit Ad</button>
                 </form>
 
-
-                <form action="/ads/delete" method="get">
+                <form action="/ads/delete/${ad.id}" method="get">
                     <button>Delete Ad</button>
                     <input type="hidden" name="singleAd" value="${ad.id}">
                 </form>

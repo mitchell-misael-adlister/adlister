@@ -12,8 +12,6 @@
     <%
         if (request.getAttribute("errors") != null) {
     %>
-    <fieldset>
-        <legend>Errors</legend>
         <ul>
             <%if (request.getAttribute("username_error") != null) {%>
             <li class="error">Please fill out username</li>
@@ -28,7 +26,6 @@
             <li class="error">Passwords do not match</li>
             <% } %>
         </ul>
-    </fieldset>
     <%
         }
     %>

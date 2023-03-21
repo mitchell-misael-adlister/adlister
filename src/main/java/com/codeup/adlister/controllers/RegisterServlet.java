@@ -22,27 +22,19 @@ public class RegisterServlet extends HttpServlet {
         String password = request.getParameter("password");
         String passwordConfirmation = request.getParameter("confirm_password");
 
-        // error message code
         request.setAttribute("errors", false);
 
-
-        // validate input
-        boolean inputHasErrors = username.isEmpty()
-                || email.isEmpty()
-                || password.isEmpty()
-                || (!password.equals(passwordConfirmation));
+        // validation
+        boolean inputHasErrors = username.isEmpty() || email.isEmpty() || password.isEmpty() || (!password.equals(passwordConfirmation));
 
         if (username.isEmpty()) {
             request.setAttribute("errors", true);
             request.setAttribute("username_error", true);
-
         }
-
         if (email.isEmpty()) {
             request.setAttribute("errors", true);
             request.setAttribute("email_error", true);
         }
-
         if (password.isEmpty()) {
             request.setAttribute("errors", true);
             request.setAttribute("password_error", true);
@@ -55,7 +47,6 @@ public class RegisterServlet extends HttpServlet {
         if ((Boolean) request.getAttribute("errors")) {
             request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
         } else if (!inputHasErrors) {
-            // create and save a new user
             User user = new User(username, email, password);
             DaoFactory.getUsersDao().insert(user);
             response.sendRedirect("/login");

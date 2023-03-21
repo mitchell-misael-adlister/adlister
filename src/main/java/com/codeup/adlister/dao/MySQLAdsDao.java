@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class MySQLAdsDao implements Ads {
-    private Connection connection = null;
+    private Connection connection;
 
     public MySQLAdsDao(Config config) {
         try {
@@ -19,7 +19,7 @@ public abstract class MySQLAdsDao implements Ads {
                     config.getPassword()
             );
         } catch (SQLException e) {
-            throw new RuntimeException("Error connecting to the database!", e);
+            throw new RuntimeException("error connecting to the database", e);
         }
     }
 
@@ -31,14 +31,12 @@ public abstract class MySQLAdsDao implements Ads {
 
         PreparedStatement stmt = connection.prepareStatement(sqlQuery, Statement.NO_GENERATED_KEYS);
         stmt.setString(1, "%" + keyword + "%");
-//        stmt.setString(2, "%" + keyword + "%");
         System.out.println(stmt);
         stmt.executeQuery();
         ResultSet rs = stmt.getResultSet();
         while (rs.next()) {
             adList.add(findUniqueAdId(rs.getLong("id")));
         }
-//        adList.add(new Ad(1, "title", "description"));
 
         return adList;
     }
@@ -61,7 +59,7 @@ public abstract class MySQLAdsDao implements Ads {
 
     @Override
     public List<Ad> all() {
-        PreparedStatement stmt = null;
+        PreparedStatement stmt;
         try {
             stmt = connection.prepareStatement("SELECT * FROM ads");
             ResultSet rs = stmt.executeQuery();
@@ -97,8 +95,8 @@ public abstract class MySQLAdsDao implements Ads {
             stmt.setString(2, description);
             stmt.setLong(3, ad.getId());
             stmt.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -109,8 +107,8 @@ public abstract class MySQLAdsDao implements Ads {
             PreparedStatement stmt = connection.prepareStatement(deleteQuery, Statement.RETURN_GENERATED_KEYS);
             stmt.setLong(1, ad.getId());
             stmt.executeUpdate();
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

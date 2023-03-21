@@ -24,11 +24,10 @@ public class CreateAdServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         User user = (User) request.getSession().getAttribute("user");
-        //code for error messages
+
         request.setAttribute("errors", false);
 
-        boolean hasErrors = request.getParameter("title").isEmpty()
-                || request.getParameter("description").isEmpty();
+        boolean hasErrors = request.getParameter("title").isEmpty() || request.getParameter("description").isEmpty();
 
         String currentTitle = request.getParameter("title");
         request.setAttribute("title", currentTitle);
@@ -46,14 +45,12 @@ public class CreateAdServlet extends HttpServlet {
                     request.getParameter("description")
             );
 
-
             Long adId = DaoFactory.getAdsDao().insert(ad);
             ad.setId(adId);
             response.sendRedirect("/ads");
         } else {
             request.setAttribute("errors", true);
-            request.getRequestDispatcher("/WEB-INF/ads/create.jsp")
-                    .forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/ads/create.jsp").forward(request, response);
         }
 
 

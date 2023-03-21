@@ -30,11 +30,9 @@ public class EditServlet extends HttpServlet {
         request.setAttribute("existingDescription", grabId.getDescription());
 
         request.getRequestDispatcher("/WEB-INF/ads/edit.jsp").forward(request, response);
-
-
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Ad adObject = (Ad) request.getSession().getAttribute("ad");
 
         System.out.println("singleAd = " + adObject);
@@ -52,6 +50,5 @@ public class EditServlet extends HttpServlet {
 
         DaoFactory.getAdsDao().edit(adObject, title, description);
         response.sendRedirect("/profile");
-
     }
 }

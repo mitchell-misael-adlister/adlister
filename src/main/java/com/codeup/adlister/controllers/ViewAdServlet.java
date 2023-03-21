@@ -17,7 +17,7 @@ public class ViewAdServlet extends HttpServlet {
 
         Long oneAd = Long.parseLong(request.getParameter("singleAd"));
         Ad singleAd = DaoFactory.getAdsDao().findUniqueAdId(oneAd);
-        request.setAttribute("singleAd", DaoFactory.getAdsDao().findUniqueAdId(oneAd));
+        request.setAttribute(String.valueOf(singleAd), DaoFactory.getAdsDao().findUniqueAdId(oneAd));
 
         request.getRequestDispatcher("/WEB-INF/ads/addisplay.jsp").forward(request, response);
 
