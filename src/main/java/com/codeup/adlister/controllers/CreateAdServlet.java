@@ -2,6 +2,7 @@ package com.codeup.adlister.controllers;
 
 import com.codeup.adlister.dao.DaoFactory;
 import com.codeup.adlister.models.Ad;
+import com.codeup.adlister.models.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,32 +14,48 @@ import java.io.IOException;
 @WebServlet(name = "controllers.CreateAdServlet", urlPatterns = "/ads/create")
 public class CreateAdServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getSession().getAttribute("user") == null) {
+            response.sendRedirect("/login");
+            return;
+        }
         request.getRequestDispatcher("/WEB-INF/ads/create.jsp")
                 .forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        // Extract the title and description from the request
-        String adTitle = request.getParameter("title");
-        String adDescription = request.getParameter("description");
+        User user = (User) request.getSession().getAttribute("user");
+        //code for error messages
+        request.setAttribute("errors", false);
 
-        // Check if title or description is empty
-        if (adTitle.isEmpty() || adDescription.isEmpty()) {
-            // If either field is empty, set the attributes in the request
-            request.setAttribute("adTitle", adTitle);
-            request.setAttribute("adDescription", adDescription);
-            // Forward the request back to the create.jsp page with the populated fields
-            request.getRequestDispatcher("/WEB-INF/ads/create.jsp").forward(request, response);
-            return;
+        boolean hasErrors = request.getParameter("title").isEmpty()
+                || request.getParameter("description").isEmpty();
+
+        String currentTitle = request.getParameter("title");
+        request.setAttribute("title", currentTitle);
+
+        String currentDesc = request.getParameter("description");
+        request.setAttribute("description", currentDesc);
+
+        String select[] = request.getParameterValues("check");
+
+
+        if (!hasErrors) {
+            Ad ad = new Ad(
+                    user.getId(),
+                    request.getParameter("title"),
+                    request.getParameter("description")
+            );
+
+
+            Long adId = DaoFactory.getAdsDao().insert(ad);
+            ad.setId(adId);
+            response.sendRedirect("/ads");
+        } else {
+            request.setAttribute("errors", true);
+            request.getRequestDispatcher("/WEB-INF/ads/create.jsp")
+                    .forward(request, response);
         }
 
-        // Create and save the ad if both fields
-        Ad ad = new Ad(
-                1, //  the user id
-                adTitle,
-                adDescription
-        );
-        DaoFactory.getAdsDao().insert(ad);
-        response.sendRedirect("/ads");
+
     }
 }

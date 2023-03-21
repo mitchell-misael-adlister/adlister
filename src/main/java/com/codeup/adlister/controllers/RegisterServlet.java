@@ -22,31 +22,43 @@ public class RegisterServlet extends HttpServlet {
         String password = request.getParameter("password");
         String passwordConfirmation = request.getParameter("confirm_password");
 
+        // error message code
+        request.setAttribute("errors", false);
+
+
         // validate input
         boolean inputHasErrors = username.isEmpty()
                 || email.isEmpty()
                 || password.isEmpty()
-                || (! password.equals(passwordConfirmation));
+                || (!password.equals(passwordConfirmation));
 
-        if (inputHasErrors) {
-            response.sendRedirect("/register");
-            return;
+        if (username.isEmpty()) {
+            request.setAttribute("errors", true);
+            request.setAttribute("username_error", true);
+
         }
 
-        // check if the username is unique
-        if (!DaoFactory.getUsersDao().isUsernameUnique(username)) { // <-- Added this line
-            request.setAttribute("usernameNotUnique", true); // <-- Added this line
-            request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response); // <-- Added this line
-            return; // <-- Added this line
+        if (email.isEmpty()) {
+            request.setAttribute("errors", true);
+            request.setAttribute("email_error", true);
         }
 
-        // create and save a new user
-        User user = new User(username, email, password);
-        DaoFactory.getUsersDao().insert(user);
-        response.sendRedirect("/login");
+        if (password.isEmpty()) {
+            request.setAttribute("errors", true);
+            request.setAttribute("password_error", true);
+        }
+        if (!password.equals(passwordConfirmation)) {
+            request.setAttribute("errors", true);
+            request.setAttribute("passwordConfirmation_error", true);
+        }
+
+        if ((Boolean) request.getAttribute("errors")) {
+            request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
+        } else if (!inputHasErrors) {
+            // create and save a new user
+            User user = new User(username, email, password);
+            DaoFactory.getUsersDao().insert(user);
+            response.sendRedirect("/login");
+        }
     }
 }
-
-
-
-//    I added a new condition to check if the username is unique using the isUsernameUnique method. If the username is not unique, an attribute called "usernameNotUnique" is set to true on the request, and the registration page is displayed again with an error message. I will need to update the register.jsp file to display the error message when the "usernameNotUnique" attribute is set to true.

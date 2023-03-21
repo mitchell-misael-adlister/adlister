@@ -1,6 +1,5 @@
 package com.codeup.adlister.dao;
 
-import com.codeup.adlister.util.Config; // Correct import for Config class
 
 public class DaoFactory {
     private static Ads adsDao;
@@ -9,7 +8,8 @@ public class DaoFactory {
 
     public static Ads getAdsDao() {
         if (adsDao == null) {
-            adsDao = new MySQLAdsDao(config);
+            adsDao = new MySQLAdsDao(config) {
+            };
         }
         return adsDao;
     }
@@ -20,4 +20,6 @@ public class DaoFactory {
         }
         return usersDao;
     }
+
+
 }
