@@ -3,6 +3,8 @@ package dao;
 import com.mysql.cj.jdbc.Driver;
 import models.Ad;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -148,7 +150,6 @@ public class MySQLAdsDAO implements Ads {
     public void deleteAd(Ad ad) {
         try{
             PreparedStatement stmt = connection.prepareStatement("UPDATE ads SET is_deleted=? WHERE id=?");
-
 
             stmt.setBoolean(1, true);
             stmt.setLong(2, ad.getId());
