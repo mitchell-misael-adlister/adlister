@@ -8,10 +8,11 @@
 </head>
 <body>
 <jsp:include page="partials/navbar.jsp" />
+<div class="container">
 <h1>Edit Your Ad</h1>
 <br>
 <a href="/profile" class="btn btn-default btn-return">Return to Profile</a>
-<div class="container">
+
     <div class="input-container">
         <form action="/ad/edit" method="POST">
             <div class="form-group">

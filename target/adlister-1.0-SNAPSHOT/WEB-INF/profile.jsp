@@ -21,10 +21,6 @@
                     <span class="oi oi-clipboard"></span>
                       New Ad
                 </a>
-                <a href="/ads/deleted" class="btn btn-default">
-                    <span class="oi oi-trash"></span>
-                      Deleted Ads
-                </a>
             <span> ${sessionScope.id}</span>
             </div>
         </div>

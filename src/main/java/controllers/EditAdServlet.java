@@ -1,5 +1,6 @@
 package controllers;
 
+import com.mysql.cj.Session;
 import dao.DaoFactory;
 import models.Ad;
 
@@ -9,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -21,7 +23,10 @@ public class EditAdServlet extends HttpServlet {
         } catch (NumberFormatException e) {
             Ad adToEdit = (Ad) request.getAttribute("ad");
             id = adToEdit.getId();
-
+        }
+        if(request.getAttribute("user") != null){
+            response.sendRedirect("/profile");
+            return;
         }
 
         Ad ad = DaoFactory.getAdsDao().getAdById(id);
