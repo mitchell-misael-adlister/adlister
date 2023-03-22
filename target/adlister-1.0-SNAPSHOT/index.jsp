@@ -16,12 +16,5 @@
 
 </div>
 
-<c:forEach var="categories" items="${categories}">
-    <div class="col-md-6">
-        <p>${categories.title}</p>
-
-    </div>
-</c:forEach>
-
 </body>
 </html>

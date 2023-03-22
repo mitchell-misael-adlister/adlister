@@ -18,7 +18,7 @@ public class EditServlet extends HttpServlet {
 
         String adId = request.getPathInfo().substring(1);
 
-        Ad grabId = DaoFactory.getAdsDao().findUniqueAdId(parseLong(adId));
+        Ad grabId = (Ad) DaoFactory.getAdsDao().getAdById(parseLong(adId));
 
         request.getSession().setAttribute("ad", grabId);
 
@@ -48,7 +48,7 @@ public class EditServlet extends HttpServlet {
         String title = request.getParameter("title");
         String description = request.getParameter("description");
 
-        DaoFactory.getAdsDao().edit(adObject, title, description);
+        DaoFactory.getAdsDao().update(adObject);
         response.sendRedirect("/profile");
     }
 }

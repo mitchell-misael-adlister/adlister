@@ -1,15 +1,15 @@
-package com.codeup.adlister.dao;
+package com.codeup.adlister.models;
 
 public class Config {
-    public String getUrl() {
+    public static String getUrl() {
         return "jdbc:mysql://studentdb.fulgentcorp.com/ymir_adlister_2?allowPublicKeyRetrieval=true&useSSL=false";
     }
 
-    public String getUser() {
+    public static String getUser() {
         return "ymir_adlister_2";
     }
 
-    public String getPassword() {
+    public static String getPassword() {
         return "tomato";
     }
 }

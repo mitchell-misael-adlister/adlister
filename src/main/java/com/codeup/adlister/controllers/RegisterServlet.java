@@ -48,7 +48,7 @@ public class RegisterServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
         } else if (!inputHasErrors) {
             User user = new User(username, email, password);
-            DaoFactory.getUsersDao().insert(user);
+            DaoFactory.getUsersDao().insertUser(user);
             response.sendRedirect("/login");
         }
     }
